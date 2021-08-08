@@ -1,0 +1,44 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/common :: head('게시판')">
+    
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" th:replace="fragments/common :: menu('board')">        
+      </nav>
+
+      <main class="container">
+        <div class="bg-light p-5 rounded">
+          <h2>게시판</h2>
+          <div>총 건수 : <span th:text="${#lists.size(boards)}"></span></div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="board : ${boards}">
+                <td th:text="${board.id}">홍길동</td>
+                <td> <a th:text="${board.title}" th:href="@{/board/form(id=${board.id})}">홍길동</a></td>
+                <td th:text="${board.content}">홍길동</td>
+              </tr>
+            </tbody>
+          </table>
+          <!--<div class="text-right">
+            <button type="button" class="btn btn-primary">쓰기</button>
+          </div>
+        -->
+          <div class="justify-content-md-end">
+            
+            <a class="btn btn-primary" type="button" th:href="@{/board/form}">쓰기</a>
+          </div>
+
+        </div>
+      </main>
+    
+  </body>
+</html>
