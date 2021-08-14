@@ -1,10 +1,14 @@
 package com.godcoder.myhome.controller;
 
+import com.godcoder.myhome.Validator.BoardValidator;
 import com.godcoder.myhome.model.Board;
 import com.godcoder.myhome.repository.BoardRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +19,9 @@ public class BoardController {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private BoardValidator boardValidator;
 
     @GetMapping("/list")
     public String list(Model model) {
@@ -35,7 +42,11 @@ public class BoardController {
     }
 
     @PostMapping("/form")
-    public String greetingSubmit(@ModelAttribute Board board) {
+    public String greetingSubmit(@Validated Board board, BindingResult bindingResult) {
+        boardValidator.validate(board, bindingResult);
+        if(bindingResult.hasErrors()){
+            return "board/form";
+        }
         boardRepository.save(board);
         return "redirect:/board/list";
     }
