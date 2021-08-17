@@ -1,6 +1,65 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="/css/styleself.css" th:href="@{/css/styleself.css}" rel="stylesheet">
+  <title th:text="${title}">Hello, Our World!</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" th:fragment="menu(menu)">
+  <div class="container-fluid">
+    <div class="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-telegram" viewBox="0 0 20 20">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"/>
+      </svg>
+    </div>
+    <a class="navbar-brand my-1" href="#">LET'S TRAVEL</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+      <li class="nav-item" th:classappend="${menu} == 'home'? 'active'" >
+        <a class="nav-link "  aria-current="page" href="#" th:href="@{/}">home<span class="sr-only" th:if="${menu} == 'home'">(current)</span></a>
+      </li>
+      <li class="nav-item" th:classappend="${menu} == 'board'? 'active'">
+        <a class="nav-link "  href="#" th:href="@{/board/list}">우리들의 여행<span class="sr-only" th:if="${menu} == 'board'">(current)</span></a>
+      </li>
+
+    </ul>
+
+    <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+    <a class="btn btn-dark " th:href="@{/account/login}"
+       sec:authorize="!isAuthenticated()">Login</a>
+
+    <a class="btn btn-dark " th:href="@{/account/register}"
+       sec:authorize="!isAuthenticated()">Join</a>
+
+    <form class="d-flex" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
+      <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+      <span class="text-white mx-2" sec:authentication="name">사용자</span>
+      <span class="text-white mx-2" sec:authentication="principal.authorities">권한</span>
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
+    </form>
+
+  </div>
+</nav>
+</body>
+</html>
+
+<!--
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head(title)">
   <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,8 +69,8 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/navbar-fixed/">
 
-    <!-- Bootstrap core CSS -->
-    <link href="static/starter-template.css" rel="stylesheet" th:href="@{/starter-template.css}">
+    &lt;!&ndash; Bootstrap core CSS &ndash;&gt;
+    <link href="static/css/starter-template.css" rel="stylesheet" th:href="@{/css/starter-template.css}">
 
     <style>
       .bd-placeholder-img {
@@ -28,12 +87,11 @@
         }
       }
     </style>
-   
+
     <title th:text="${title}">Hello, Spring Boot!</title>
 </head>
 
   <body>
-  
     <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" th:fragment="menu(menu)">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Spring Boot Tutorial</a>
@@ -42,19 +100,31 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-              <li class="nav-item" th:classappend="${menu} == 'home'? 'active'">
+              <li class="nav-item" th:classappend="${menu == 'home'}? 'active'">
                 <a class="nav-link" href="#" th:href="@{/}">홈 <span class="sr-only" th:if="${menu} == 'home'">(current)</span></a>
               </li>
-              <li class="nav-item" th:classappend="${menu} == 'board'? 'active'">
+              <li class="nav-item" th:classappend="${menu == 'board'}? 'active'">
                 <a class="nav-link" href="#"  th:href="@{/board/list}">게시판 <span class="sr-only" th:if="${menu} == 'board'">(current)</span></a>
               </li>
-              
             </ul>
-            
+
+            &lt;!&ndash;좌측 메뉴&ndash;&gt;
+            <a class="btn btn-secondary my-2 my-sm-0 mr-2" th:href="@{/account/register}"
+                sec:authorize="!isAuthenticated()">회원가입</a>
+            <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/account/login}"
+                sec:authorize="!isAuthenticated()">Login</a>
+
+                &lt;!&ndash;로그인시에만 나타나는 메뉴&ndash;&gt;
+            <form class="form_inline my-2 my-lg-0" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()" >
+              <span class="text-white mx-2" sec:authentication="name">사용자</span>
+              <span class="text-white mx-2" sec:authentication="principal.authorities">권한</span>
+              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
+            </form>
+
           </div>
         </div>
       </nav>
-  
+
   </body>
-  
-</html>
+
+</html>-->

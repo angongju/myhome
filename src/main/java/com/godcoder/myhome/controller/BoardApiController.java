@@ -4,6 +4,7 @@ import com.godcoder.myhome.model.Board;
 import com.godcoder.myhome.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.List;
 
@@ -13,12 +14,21 @@ class BoardApiController {
 
     @Autowired
     private  BoardRepository repository;
-
-    // Aggregate root
-    // tag::get-aggregate-root[]
+/*
     @GetMapping("/boards")
     List<Board> all() {
         return repository.findAll();
+    }
+*/
+    //7강 제목, 내용으로 검색하는 api추가
+    @GetMapping("/boards")
+    List<Board> all(@RequestParam(required = false, defaultValue = "") String title,
+        @RequestParam(required = false, defaultValue = "") String content) {
+        if(StringUtils.isEmpty(title) && StringUtils.isEmpty(content)){
+            return repository.findAll();
+        } else {
+            return repository.findByTitleOrContent(title, content);
+        }
     }
     // end::get-aggregate-root[]
 
@@ -36,7 +46,6 @@ class BoardApiController {
 
     @PutMapping("/boards/{id}")
     Board replaceBoard(@RequestBody Board newBoard, @PathVariable Long id) {
-
         return repository.findById(id)
                 .map(board -> {
                     board.setTitle(newBoard.getTitle());
