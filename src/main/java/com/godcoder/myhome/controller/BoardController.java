@@ -62,6 +62,11 @@ public class BoardController {
         if(bindingResult.hasErrors()){
             return "board/form";
         }
+        //board.setUser(usr) 는 보안 문제 발생.. 따라서 서버의 인증방법을 이용.
+        //Authentication a = SecurityContextHolder.getContext().getAuthentication();
+        // controller에서 가져오지 않고 서비스클래스나 스프링에서 관리하는 클래스에서 인증정보 가져올 때는 전역변수를 써서 위의 문구처럼 사용.
+        //10장 코딩의신 8:40~ 참고
+        //spring boot get login user 구글검색
 
         String username = authentication.getName();
         boardService.save(username, board);

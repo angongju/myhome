@@ -22,8 +22,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()//보안 취약해짐..
                 .authorizeRequests()
-                    .antMatchers("/", "/account/register", "/css/**", "/images/**", "/api/**", "/board/list").permitAll()
+                    .antMatchers("/", "/account/register", "/css/**", "/images/**", "/api/**", "/board/list")
+                    .permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -39,23 +41,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .passwordEncoder(passwordEncoder())
-                .usersByUsernameQuery("select username,password,enabled "
+                .usersByUsernameQuery("select username,password,enabled "  // Authentication 인증처리
                         + "from user "
                         + "where username = ?")
-                .authoritiesByUsernameQuery("select u.username, r.name "
+                .authoritiesByUsernameQuery("select u.username, r.name "  // Authrizatoin 권한처리 //user, role, user_role테이블 이너조인
                         + "from user_role ur inner join  user u on ur.user_id = u.id "
                         + "inner join role r on ur.role_id = r.id "
                         + "where u.username = ?");
     }
 
     /*
-    Authentication 로그인
-    Authroization 권한
+    Authentication 인증 로그인
+    Authrization 권한
     */
 
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 

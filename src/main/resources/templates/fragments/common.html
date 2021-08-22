@@ -34,25 +34,36 @@
       <li class="nav-item" th:classappend="${menu} == 'board'? 'active'">
         <a class="nav-link "  href="#" th:href="@{/board/list}">우리들의 여행<span class="sr-only" th:if="${menu} == 'board'">(current)</span></a>
       </li>
-
     </ul>
 
-    <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
-    <a class="btn btn-dark " th:href="@{/account/login}"
-       sec:authorize="!isAuthenticated()">Login</a>
+    <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> 검색폼 사용안함..-->
+    <!-- 권한에 따른 메뉴 표기 thymeleaf 문법 이용.. 9장 1:09:21 이후 참고-->
 
+    <a class="btn btn-dark mr-2" th:href="@{/account/login}"
+       sec:authorize="!isAuthenticated()">로그인</a>
     <a class="btn btn-dark " th:href="@{/account/register}"
-       sec:authorize="!isAuthenticated()">Join</a>
+       sec:authorize="!isAuthenticated()">회원가입</a>
 
     <form class="d-flex" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
       <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
       <span class="text-white mx-2" sec:authentication="name">사용자</span>
       <span class="text-white mx-2" sec:authentication="principal.authorities">권한</span>
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit">로그아웃</button>
     </form>
 
   </div>
 </nav>
+
+<footer th:fragments="footer">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sh384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sh384-OgVRvuATP1z7JjHLkuOU7Xw704+hh935Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"></script>
+</footer>
+
 </body>
 </html>
 
