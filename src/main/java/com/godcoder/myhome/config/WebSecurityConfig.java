@@ -22,10 +22,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()//보안 취약해짐..
+                .csrf().disable()//보안체크 안함.. 테스트 때문에.. 보안 취약해짐..
                 .authorizeRequests()
-                    .antMatchers("/", "/account/register", "/css/**", "/images/**", "/api/**", "/board/list")
-                    .permitAll()
+                    .antMatchers("/", "/account/register", "/css/**", "/api/**", "/images/**", "/board/list") .permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -58,7 +57,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 

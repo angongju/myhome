@@ -41,7 +41,7 @@
         <footer th:replace="/fragments/common :: footer">
           <script>
               function deleteBoard(id) {
-                //post /api/boards/{id}
+                //DELETE /api/boards/{id}  //BoardApiController
                 $.ajax({
                   url: '/api/boards/' + id,
                   type: 'DELETE',

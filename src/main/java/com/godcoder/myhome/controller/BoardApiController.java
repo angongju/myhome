@@ -21,7 +21,7 @@ class BoardApiController {
         return repository.findAll();
     }
 */
-    //7강 제목, 내용으로 검색하는 api추가
+    //7강 제목, 내용으로 검색하는 api추가.  게시글 검색
     @GetMapping("/boards")
     List<Board> all(@RequestParam(required = false, defaultValue = "") String title,
         @RequestParam(required = false, defaultValue = "") String content) {
@@ -58,7 +58,7 @@ class BoardApiController {
                     return repository.save(newBoard);
                 });
     }
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_ADMIN") //ROLE_ADMIN 사용자만 Delete 할 수 있게.. //MethodSecurityConfig 에서 어노테이션 사용 설정을 해줬음.
     @DeleteMapping("/boards/{id}")
     void deleteBoard(@PathVariable Long id) { repository.deleteById(id); }
 }

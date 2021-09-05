@@ -31,6 +31,4 @@ public class Board {
     // user테이블의 id가 기본키로 되어 있어(17줄에 명시되어 있음) 생략 가능.
     @JsonIgnore
     private User user;
-
-
 }
